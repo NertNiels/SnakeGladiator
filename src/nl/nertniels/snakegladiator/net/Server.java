@@ -11,6 +11,7 @@ import java.util.Random;
 
 import nl.nertniels.snakegladiator.game.Snake;
 import nl.nertniels.snakegladiator.main.Settings;
+import nl.nertniels.snakegladiator.net.visualcode.Runner;
 
 public class Server extends Thread {
 	private DatagramSocket socket;
@@ -94,13 +95,13 @@ public class Server extends Thread {
 				break;
 			case Packets.UPDATE_ARENA:
 				if(arena != null) {
+					
 					getConnectionById(Integer.parseInt(message.substring(2))).ready = true;
 					everyoneReady = true;
 					for(int i = 0; i < connections.size(); i++) {
 						everyoneReady = everyoneReady && connections.get(i).ready;
 					}
 					if(everyoneReady) {
-						System.out.println("Everyone has updated.");
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
@@ -108,7 +109,6 @@ public class Server extends Thread {
 								String update = arena.update();
 								try {
 									long timePassed = System.currentTimeMillis() - time;
-									System.out.println(timePassed);
 									if(timePassed < Settings.ROUND_TIME_MILLIS) Thread.sleep(Settings.ROUND_TIME_MILLIS-timePassed);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
@@ -176,6 +176,8 @@ public class Server extends Thread {
 			int y = random.nextInt(arena.height);
 			
 			message += "*"+snakes[i].playerId+"*"+snakes[i].color+"*"+snakes[i].playerName+"*"+x+"*"+y;
+			
+			snakes[i].setLocation(x, y);
 		}
 		
 		sendDataAll(message.getBytes());

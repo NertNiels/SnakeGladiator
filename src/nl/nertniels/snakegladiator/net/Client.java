@@ -23,6 +23,7 @@ public class Client extends Thread {
 	
 	private long lastTimePing;
 	public boolean ready = false;
+	public long pingTime = -1;
 	
 	
 	public Client(Main main, String serverIp, int serverPort) {
@@ -57,8 +58,7 @@ public class Client extends Thread {
 			
 			switch(type) {
 			case Packets.PONG:
-				long ping = System.currentTimeMillis() - lastTimePing;
-				System.out.println("Ping time is " + ping + "ms");
+				pingTime = System.currentTimeMillis() - lastTimePing;
 				break;
 			case Packets.CONNECT:
 				main.setPlayerId(Integer.parseInt(message.substring(2)));

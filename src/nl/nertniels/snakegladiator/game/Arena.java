@@ -37,7 +37,7 @@ public class Arena {
 		
 		if(!updatable) return;
 		for(int i = 0; i < snakes.length; i++) {
-			snakes[i].update();
+			snakes[i].update(null);
 		}
 		
 		for(int i = 0; i < snakes.length; i++) {

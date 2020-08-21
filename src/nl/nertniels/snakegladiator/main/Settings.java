@@ -6,5 +6,5 @@ public class Settings {
 	public static final int WINDOW_WIDTH = 720;
 	public static final int WINDOW_HEIGHT = 720;
 	
-	public static final long ROUND_TIME_MILLIS = 100;
+	public static final long ROUND_TIME_MILLIS = 1;
 }

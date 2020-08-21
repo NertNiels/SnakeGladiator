@@ -114,8 +114,9 @@ public class Main extends Canvas implements Runnable {
 			
 			if(System.currentTimeMillis() - milTime >= 1000) {
 				milTime += 1000;
+				System.out.println("FPS: " + frames + ", TPS: " + updates + (client.pingTime == -1 ? "" : (", PING: " + client.pingTime+"ms")));
+
 				client.ping();
-				System.out.println("FPS: " + frames + ", TPS: " + updates);
 				frames = 0;
 				updates = 0;
 			}

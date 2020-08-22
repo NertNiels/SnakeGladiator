@@ -17,7 +17,9 @@ public class Snake {
 	public static Point[] DIRECTIONS = new Point[] {new Point(0, -1), new Point(-1, 0), new Point(0, 1), new Point(1, 0)};
 	public int direction; //0 up, 1 left, 2 down, 3 right
 	
+	private boolean hasGrown = false;
 	private boolean grow = false;
+	public boolean dead = false;
 	
 	public Runner runner;
 
@@ -32,17 +34,14 @@ public class Snake {
 		runner = new Runner(this);
 	}
 	
-	public String update(int[][] tiles) {
-		System.out.println(direction);
-		
-		String out = "*"+playerId+"*"+direction+"*"+grow;
+	public void update(int[][] tiles) {
+		if(dead) return;
 		
 		addTile(DIRECTIONS[direction], tiles);
 		head = location.get(location.size()-1);
+		hasGrown = grow;
 		if(!grow) removeTile(tiles);
 		grow = false;
-		
-		return out;
 	}
 	
 	private void addTile(Point dir, int[][] tiles) {
@@ -77,14 +76,34 @@ public class Snake {
 		this.grow = grow;
 	}
 	
+	public void die(boolean die) {
+		dead = die;
+		if(die) color = Color.DARK_GRAY.getRGB();
+	}
+	
+	public String getPacketString() {
+		return "*"+playerId+"*"+direction+"*"+hasGrown+"*"+dead;
+	}
+	
 	public boolean testCollide(Snake snake) {
-		return snake.location.contains(head);
+		if(snake.getPlayerId() == playerId) {
+			for(int i = 0; i < location.size()-1; i++) {
+				if(head.x == location.get(i).x && head.y == location.get(i).y) return true;
+			}
+		} else {
+			return snake.location.contains(head);
+		}
+		return false;
 	}
 
 	public void setLocation(int x, int y) {
 		location.clear();
 		location.add(new Point(x, y));
 		head = location.get(0);
+	}
+	
+	public int getPlayerId() {
+		return playerId;
 	}
 	
 	@Override

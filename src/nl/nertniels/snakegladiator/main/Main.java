@@ -20,7 +20,7 @@ public class Main extends Canvas implements Runnable {
 	public static Main MAIN;
 	
 	private Window window;
-	public boolean running = false;
+	public static boolean RUNNING = false;
 	
 	private BufferedImage image = new BufferedImage(Settings.WINDOW_WIDTH/4, Settings.WINDOW_HEIGHT/4, BufferedImage.TYPE_INT_RGB);
 	
@@ -44,7 +44,7 @@ public class Main extends Canvas implements Runnable {
 	}
 	
 	public synchronized void start() {
-		running = true;
+		RUNNING = true;
 		
 		String serverIp = "localhost";
 		int serverPort = 25566;
@@ -55,8 +55,8 @@ public class Main extends Canvas implements Runnable {
 			server = new Server();
 			server.start();
 		} else if(runServer == 1) {
-			serverIp = JOptionPane.showInputDialog(this, "Input the server ip.");
-			serverPort = Integer.parseInt(JOptionPane.showInputDialog(this, "Input the server port."));
+			serverIp = JOptionPane.showInputDialog(this, "Input the server ip.", "localhost");
+			serverPort = Integer.parseInt(JOptionPane.showInputDialog(this, "Input the server port.", "25566"));
 		} else {
 			System.exit(0);
 		}
@@ -70,7 +70,7 @@ public class Main extends Canvas implements Runnable {
 	}
 	
 	public synchronized void stop() {
-		running = false;
+		RUNNING = false;
 	}
 	@Override
 	public void run() {
@@ -89,7 +89,7 @@ public class Main extends Canvas implements Runnable {
 		double delta = 0;
 		
 		boolean render = false;
-		while(running) {
+		while(RUNNING) {
 			long now = System.nanoTime();
 			delta += (now-lastTime)/nsPerTick;
 			lastTime = now;
@@ -121,6 +121,8 @@ public class Main extends Canvas implements Runnable {
 				updates = 0;
 			}
 		}
+		
+		System.exit(0);
 	}
 	
 	public void update() {
@@ -143,7 +145,8 @@ public class Main extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		arena.render(g);
+		if(getWidth()/2 > getHeight()) arena.render(g, getWidth()-getHeight(), 0, getHeight(), getHeight());
+		else arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getWidth()/2, getWidth()/2);
 		
 		g.dispose();
 		bs.show();
@@ -167,6 +170,10 @@ public class Main extends Canvas implements Runnable {
 	
 	public static void main(String[] args) {
 		MAIN = new Main();
+	}
+	
+	public void toggleFullScreen() {
+		window.toggleFullScreen();
 	}
 
 }

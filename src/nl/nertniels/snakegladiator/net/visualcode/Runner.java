@@ -11,6 +11,7 @@ public class Runner {
 	public int currentLine = 0;
 	
 	private Snake snake;
+	private int directionAfterRun = 0;;
 	
 	public Runner(Snake snake) {
 		this.snake = snake;
@@ -18,19 +19,22 @@ public class Runner {
 		variables = new Object[4];
 		variables[3] = -1f;
 		
-		blocks = new Block[7];
-		blocks[0] = new IfBlock(new Condition(0, 3, 1), 6);
+		blocks = new Block[4];
+		blocks[0] = new IfBlock(new Condition(0, 3, 1), 5);
 		blocks[1] = new DirectionBlock(1);
-		blocks[2] = new IfBlock(new Condition(1, 3, 1), 6);
-		blocks[3] = new DirectionBlock(-2);
-		blocks[4] = new JumpBlock(6);
-		blocks[5] = new DirectionBlock(0);
+		blocks[2] = new IfBlock(new Condition(1, 3, 1), 5);
+		blocks[3] = new DirectionBlock(-1);
 	}
 	
 	public void run() {
+		directionAfterRun = 0;
 		for(currentLine = 0; currentLine < blocks.length; currentLine++) {
 			blocks[currentLine].run(this);
 		}
+		
+		snake.direction += directionAfterRun;
+		if(snake.direction < 0) snake.direction += 4;
+		snake.direction %= 4;
 	}
 	
 	public Object getVariable(int id) {
@@ -38,17 +42,13 @@ public class Runner {
 	}
 	
 	public void setDirection(int direction) {
-		snake.direction += direction;
-		if(snake.direction < 0) snake.direction += 4;
-		snake.direction %= 4;
+		directionAfterRun = direction;
 	}
 	
 	public void setTileVariables(int tileAhead, int tileLeft, int tileRight) {
 		variables[0] = (float)tileAhead;
 		variables[1] = (float)tileLeft;
 		variables[2] = (float)tileRight;
-		
-		System.out.println(tileAhead + ", " + tileLeft + ", " + tileRight);
 	}
 	
 }

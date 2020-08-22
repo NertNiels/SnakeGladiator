@@ -92,12 +92,13 @@ public class Client extends Thread {
 				break;
 			case Packets.UPDATE_ARENA:
 				String[] updateData = message.split("[*]");
-				for(int i = 1; i < updateData.length; i+=3) {
+				for(int i = 1; i < updateData.length; i+=4) {
 					int updateId = Integer.parseInt(updateData[i]);
 					int updateDirection = Integer.parseInt(updateData[i+1]);
 					boolean updateGrow = Boolean.parseBoolean(updateData[i+2]);
+					boolean updateDie = Boolean.parseBoolean(updateData[i+3]);
 					
-					main.arena.updateSnakeDataById(updateId, updateDirection, updateGrow);
+					main.arena.updateSnakeDataById(updateId, updateDirection, updateGrow, updateDie);
 					main.arena.updatable = true;
 				}
 				break;

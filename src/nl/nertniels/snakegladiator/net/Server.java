@@ -166,14 +166,14 @@ public class Server extends Thread {
 			snakes[i] = new Snake(c.id, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()).getRGB(), c.name);
 		}
 		
-		arena = new ServerArena(20, 20, snakes);
+		arena = new ServerArena(Settings.ARENA_WIDTH, Settings.ARENA_HEIGHT, snakes);
 		
 		String message = Packets.START_ARENA;
 		message += arena.width+"*"+arena.height+"*"+snakes.length;
 		for(int i = 0; i < snakes.length; i++) {
 			
-			int x = random.nextInt(arena.width);
-			int y = random.nextInt(arena.height);
+			int x = 1+random.nextInt(arena.width-2);
+			int y = 1+random.nextInt(arena.height-2);
 			
 			message += "*"+snakes[i].playerId+"*"+snakes[i].color+"*"+snakes[i].playerName+"*"+x+"*"+y;
 			

@@ -3,6 +3,7 @@ package nl.nertniels.snakegladiator.net;
 import java.util.Random;
 
 import nl.nertniels.snakegladiator.game.Snake;
+import nl.nertniels.snakegladiator.main.Main;
 
 public class ServerArena {
 
@@ -25,7 +26,7 @@ public class ServerArena {
 		tiles = new int[width][height];
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height; j++) {
-				tiles[i][j] = -1;
+				tiles[i][j] = (i == 0 || i == width - 1 || j == 0 || j == height-1) ? -2 : -1;
 			}
 		}
 	}
@@ -52,20 +53,33 @@ public class ServerArena {
 		
 		for(Snake s : snakes) {
 //			s.direction = random.nextInt(4);
+			if(s.dead) continue;
 			s.grow(random.nextBoolean());
-			out += s.update(tiles);
+			s.update(tiles);
 		}
 		
 		for(int i = 0; i < snakes.length; i++) {
+			if(snakes[i].dead) continue;
 			for(int j = 0; j < snakes.length; j++) {
-				if(i == j) continue;
 				if(snakes[i].testCollide(snakes[j])) {
-					System.out.println("Collision");
+					System.out.println("The snake has collided with a snake!");
+					snakes[i].die(true);
+					
 				}
 			}
+			
+			if(tiles[snakes[i].head.x][snakes[i].head.y] == -2) {
+				System.out.println("The snake has collided with a wall!");
+				snakes[i].die(true);
+			}
+			
+
+			out += snakes[i].getPacketString();
 		}
 		
 		return out;
 	}
+	
+	
 	
 }

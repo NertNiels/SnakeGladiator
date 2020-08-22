@@ -37,7 +37,7 @@ public class InputHandler implements KeyListener {
 		
 		if(e.getKeyCode() == 10) ENTER = true;
 		if(e.getKeyCode() == 16) SHIFT = true;
-
+		
 //		System.out.println(e.getKeyCode());
 	}
 
@@ -55,6 +55,9 @@ public class InputHandler implements KeyListener {
 		
 		if(e.getKeyCode() == 10) ENTER = false;
 		if(e.getKeyCode() == 16) SHIFT = false;
+		
+		if(e.getKeyCode() == 122) Main.MAIN.toggleFullScreen();
+		if(e.getKeyChar() == 27) System.exit(0);
 	}
 	
 }

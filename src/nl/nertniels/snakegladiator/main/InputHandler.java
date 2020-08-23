@@ -2,10 +2,10 @@ package nl.nertniels.snakegladiator.main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import nl.nertniels.snakegladiator.game.Snake;
-
-public class InputHandler implements KeyListener {
+public class InputHandler implements KeyListener, MouseListener {
 	
 	public static boolean W;
 	public static boolean A;
@@ -20,6 +20,15 @@ public class InputHandler implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
+//		System.out.println(e.getKeyChar());
+		
+		if(Main.MAIN.chat != null) {
+			if(Main.MAIN.chat.focus) {
+				if(e.getKeyChar() == '\n') Main.MAIN.chat.send();
+				else if((int)e.getKeyChar() == 8) Main.MAIN.chat.backspace();
+				else Main.MAIN.chat.inputText += e.getKeyChar();
+			}
+		}
 		
 	}
 
@@ -58,6 +67,39 @@ public class InputHandler implements KeyListener {
 		
 		if(e.getKeyCode() == 122) Main.MAIN.toggleFullScreen();
 		if(e.getKeyChar() == 27) System.exit(0);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			if(Main.MAIN.chat != null) {
+				Main.MAIN.chat.focus = Main.MAIN.chat.input.contains(e.getX(), e.getY());
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

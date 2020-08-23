@@ -76,6 +76,9 @@ public class Server extends Thread {
 				}
 				break;
 			case Packets.SEND_CHAT:
+				String chatText = message.substring(2, message.length()-2);
+				if(arena == null) sendData((Packets.SEND_CHAT+"The game had not yet begun, sending messages is not allowed.-1").getBytes(), packet.getAddress(), packet.getPort());
+				else sendDataAll(packet.getData());
 				break;
 			case Packets.READY:
 				if(arena == null) {

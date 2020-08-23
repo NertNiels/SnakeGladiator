@@ -97,5 +97,9 @@ public class Arena {
 		}
 		return out;
 	}
+
+	public Snake getSnakeById(int id) {
+		return snakes[id];
+	}
 	
 }

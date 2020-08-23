@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JOptionPane;
 
@@ -18,16 +19,14 @@ public class Main extends Canvas implements Runnable {
 	
 	public static Main MAIN;
 	
-	private InputHandler inputHandler;
 	private Window window;
 	public static boolean RUNNING = false;
 	
 	private BufferedImage image = new BufferedImage(Settings.WINDOW_WIDTH/4, Settings.WINDOW_HEIGHT/4, BufferedImage.TYPE_INT_RGB);
 	
 	public Arena arena;
-	public Chat chat;
 	
-	public Client client;
+	private Client client;
 	private Server server;
 	
 	private String playerName;
@@ -36,10 +35,7 @@ public class Main extends Canvas implements Runnable {
 	public Main() {
 		setPreferredSize(new Dimension(Settings.WINDOW_WIDTH, Settings.WINDOW_HEIGHT));
 		window = new Window(this);
-		
-		inputHandler = new InputHandler();
-		this.addKeyListener(inputHandler);
-		this.addMouseListener(inputHandler);
+		this.addKeyListener(new InputHandler());
 		this.requestFocus();
 		Thread.currentThread().setName("Main");
 		start();
@@ -65,11 +61,7 @@ public class Main extends Canvas implements Runnable {
 			System.exit(0);
 		}
 		
-		playerName = "";
-		while(playerName.isEmpty()) {
-			playerName = JOptionPane.showInputDialog(this, "Please enter your username.");
-		}
-		playerName = playerName.toUpperCase();
+		playerName = JOptionPane.showInputDialog(this, "Please enter your username.");
 		
 		client = new Client(this, serverIp, serverPort);
 		client.start();
@@ -82,11 +74,10 @@ public class Main extends Canvas implements Runnable {
 	}
 	@Override
 	public void run() {
-		Snake[] snakes = new Snake[1];
-		snakes[0] = new Snake(0, Color.blue.getRGB(), "NertNiels");
+		Snake[] snakes = new Snake[2];
+		snakes[0] = new Snake(0, Color.red.getRGB(), "NertNiels");
+		snakes[1] = new Snake(1, Color.blue.getRGB(), "Stannanman");
 		arena = new Arena(20, 20, snakes, this);
-		
-		chat = new Chat();
 		
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000d/60d;
@@ -140,8 +131,6 @@ public class Main extends Canvas implements Runnable {
 		if(!client.ready && InputHandler.SHIFT) {
 			client.ready();
 		}
-		
-		chat.update();
 	}
 	
 	public void render() {
@@ -156,10 +145,8 @@ public class Main extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(getWidth()/2 > getHeight()) arena.render(g, getWidth()-getHeight(), 0, getHeight(), getHeight());
+		if(getWidth()/2 < getHeight()) arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getHeight(), getHeight());
 		else arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getWidth()/2, getWidth()/2);
-		
-		chat.render(g);
 		
 		g.dispose();
 		bs.show();
@@ -183,10 +170,6 @@ public class Main extends Canvas implements Runnable {
 	
 	public static void main(String[] args) {
 		MAIN = new Main();
-	}
-	
-	public void toggleFullScreen() {
-		window.toggleFullScreen();
 	}
 
 }

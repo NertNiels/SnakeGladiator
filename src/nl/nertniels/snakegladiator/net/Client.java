@@ -65,6 +65,11 @@ public class Client extends Thread {
 				System.out.println("Server assigned player id " + main.getPlayerId() + " to this client.");
 				break;
 			case Packets.SEND_CHAT:
+				String chatText = message.substring(2, message.length()-2);
+				int chatId = Integer.parseInt(message.substring(message.length()-2));
+				
+				Main.MAIN.chat.addMessage(chatText, chatId);
+				
 				break;
 			case Packets.START_ARENA:
 				String[] messageData = message.split("[*]");

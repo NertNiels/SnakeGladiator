@@ -55,8 +55,35 @@ public class Chat {
 			Message m = messages.get(i);
 			
 			g.setColor(m.color);
-			g.drawString(m.text, x, Main.MAIN.getHeight()-30-offset);
-			offset += fm.getHeight();
+//			g.drawString(m.text, x, Main.MAIN.getHeight()-30-offset);
+			
+			String[] words = m.text.split("[ ]");
+			int lineLength = 0;
+			int spaceLength = fm.charWidth(' ');
+			String currentLine = "";
+			
+			ArrayList<String> lines = new ArrayList<String>();
+			for(int w = 0; w < words.length; w++) {
+				int wordLength = fm.charsWidth(words[w].toCharArray(), 0, words[w].length());
+				if(lineLength == 0 && wordLength > width) lines.add(currentLine);
+				else if(lineLength + wordLength > width) {
+					lines.add(currentLine);
+					currentLine = "";
+					lineLength = 0;
+					w--;
+				} else {
+					currentLine += words[w] + " ";
+					lineLength += wordLength + spaceLength;
+				}
+			}
+			lines.add(currentLine);
+			for(int l = lines.size()-1; l > -1; l--) {
+				g.drawString(lines.get(l), x, Main.MAIN.getHeight()-30-offset);
+				offset += fm.getHeight();
+			}
+			
+			
+//			offset += fm.getHeight();
 
 		}
 		g.setColor(Color.white);

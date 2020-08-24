@@ -53,6 +53,7 @@ public class Arena {
 		if(!updatable) return;
 		for(int i = 0; i < snakes.length; i++) {
 			snakes[i].update(null);
+//			System.out.println("Client: " + snakes[i].head.x + ", " + snakes[i].head.y);
 		}
 		
 		for(int i = 0; i < snakes.length; i++) {
@@ -85,6 +86,7 @@ public class Arena {
 	
 	public void updateSnakeDataById(int id, int direction, boolean grow, boolean die) {
 		snakes[id].direction = direction;
+		System.out.println("Client: " + direction);
 		snakes[id].grow(grow);
 		snakes[id].die(die);
 	}

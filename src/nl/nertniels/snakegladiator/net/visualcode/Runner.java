@@ -49,6 +49,8 @@ public class Runner {
 		variables[0] = (float)tileAhead;
 		variables[1] = (float)tileLeft;
 		variables[2] = (float)tileRight;
+		
+//		System.out.println(tileAhead + ", " + tileLeft + ", " + tileRight);
 	}
 	
 }

@@ -96,6 +96,7 @@ public class Client extends Thread {
 				sendData((Packets.UPDATE_ARENA+main.getPlayerId()).getBytes());
 				break;
 			case Packets.UPDATE_ARENA:
+				if(main.arena == null) break;
 				String[] updateData = message.split("[*]");
 				for(int i = 1; i < updateData.length; i+=4) {
 					int updateId = Integer.parseInt(updateData[i]);
@@ -106,6 +107,16 @@ public class Client extends Thread {
 					main.arena.updateSnakeDataById(updateId, updateDirection, updateGrow, updateDie);
 					main.arena.updatable = true;
 				}
+				break;
+			case Packets.STOP_ARENA:
+				if(main.arena == null) break;
+				main.arena = null;
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				sendData((Packets.READY+main.getPlayerId()).getBytes());
 				break;
 			}
 		}

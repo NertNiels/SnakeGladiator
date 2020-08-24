@@ -20,6 +20,7 @@ public class Server extends Thread {
 	private ArrayList<Connection> connections;
 	
 	public boolean everyoneReady = false;
+	public boolean restarting = false;
 	
 	private Random random;
 	
@@ -77,11 +78,18 @@ public class Server extends Thread {
 				break;
 			case Packets.SEND_CHAT:
 				String chatText = message.substring(2, message.length()-2);
-				if(arena == null) sendData((Packets.SEND_CHAT+"The game had not yet begun, sending messages is not allowed.-1").getBytes(), packet.getAddress(), packet.getPort());
+				if(chatText.startsWith("/")) {
+					if(chatText.equalsIgnoreCase("/restart")) {
+						sendDataAll(Packets.STOP_ARENA.getBytes());
+						System.out.println("Server: restarting");
+						restarting = true;
+					}
+				}
+				else if(arena == null) sendData((Packets.SEND_CHAT+"The game had not yet begun, sending messages is not allowed.-1").getBytes(), packet.getAddress(), packet.getPort());
 				else sendDataAll(packet.getData());
 				break;
 			case Packets.READY:
-				if(arena == null) {
+				if(arena == null || restarting) {
 					getConnectionById(Integer.parseInt(message.substring(2))).ready = true;
 					everyoneReady = true;
 					for(int i = 0; i < connections.size(); i++) {
@@ -90,6 +98,7 @@ public class Server extends Thread {
 					if(everyoneReady) {
 						System.out.println("Everyone seems to be ready to start.");
 						startArena();
+						restarting = false;
 						for(Connection c : connections) {
 							c.ready = false;
 						}

@@ -10,6 +10,7 @@ public class Packets {
 	public static final String READY = "05";
 	public static final String START_ARENA = "06";
 	public static final String UPDATE_ARENA = "07";
+	public static final String STOP_ARENA = "08";
 	
 	/*
 	 * PING:
@@ -30,6 +31,8 @@ public class Packets {
 	 * UPDATE_ARENA:
 	 * 		To client:		07id*direction*grow*die*...
 	 * 		To server:		07id
+	 * STOP_ARENA
+	 * 		To client:		08
 	 */
 	
 }

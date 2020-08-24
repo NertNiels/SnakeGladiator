@@ -135,7 +135,7 @@ public class Main extends Canvas implements Runnable {
 	}
 	
 	public void update() {
-		arena.update();
+		if(arena != null) arena.update();
 		
 		if(!client.ready && InputHandler.SHIFT) {
 			client.ready();
@@ -156,8 +156,8 @@ public class Main extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(getWidth()/2 > getHeight()) arena.render(g, getWidth()-getHeight(), 0, getHeight(), getHeight());
-		else arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getWidth()/2, getWidth()/2);
+		if(getWidth()/2 > getHeight() && arena != null) arena.render(g, getWidth()-getHeight(), 0, getHeight(), getHeight());
+		else if(arena != null) arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getWidth()/2, getWidth()/2);
 		
 		chat.render(g);
 		

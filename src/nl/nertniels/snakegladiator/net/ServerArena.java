@@ -56,6 +56,7 @@ public class ServerArena {
 			if(s.dead) continue;
 			s.grow(random.nextBoolean());
 			s.update(tiles);
+//			System.out.println("Server: " + s.head.x + ", " + s.head.y);
 		}
 		
 		for(int i = 0; i < snakes.length; i++) {

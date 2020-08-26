@@ -86,7 +86,6 @@ public class Arena {
 	
 	public void updateSnakeDataById(int id, int direction, boolean grow, boolean die) {
 		snakes[id].direction = direction;
-		System.out.println("Client: " + direction);
 		snakes[id].grow(grow);
 		snakes[id].die(die);
 	}

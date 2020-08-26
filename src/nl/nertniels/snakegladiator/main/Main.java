@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import nl.nertniels.snakegladiator.game.Arena;
 import nl.nertniels.snakegladiator.game.Snake;
+import nl.nertniels.snakegladiator.game.visualcode.CodeContainer;
 import nl.nertniels.snakegladiator.net.Client;
 import nl.nertniels.snakegladiator.net.Server;
 
@@ -26,6 +27,7 @@ public class Main extends Canvas implements Runnable {
 	
 	public Arena arena;
 	public Chat chat;
+	public CodeContainer codeContainer;
 	
 	public Client client;
 	private Server server;
@@ -40,6 +42,7 @@ public class Main extends Canvas implements Runnable {
 		inputHandler = new InputHandler();
 		this.addKeyListener(inputHandler);
 		this.addMouseListener(inputHandler);
+		this.addMouseMotionListener(inputHandler);
 		this.requestFocus();
 		Thread.currentThread().setName("Main");
 		start();
@@ -87,6 +90,8 @@ public class Main extends Canvas implements Runnable {
 		arena = new Arena(20, 20, snakes, this);
 		
 		chat = new Chat();
+		
+		codeContainer = new CodeContainer();
 		
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000d/60d;
@@ -141,6 +146,7 @@ public class Main extends Canvas implements Runnable {
 			client.ready();
 		}
 		
+		codeContainer.update();
 		chat.update();
 	}
 	
@@ -159,6 +165,7 @@ public class Main extends Canvas implements Runnable {
 		if(getWidth()/2 > getHeight() && arena != null) arena.render(g, getWidth()-getHeight(), 0, getHeight(), getHeight());
 		else if(arena != null) arena.render(g, getWidth()/2, getHeight()/2-getWidth()/4, getWidth()/2, getWidth()/2);
 		
+		codeContainer.render(g);
 		chat.render(g);
 		
 		g.dispose();

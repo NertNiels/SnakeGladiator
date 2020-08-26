@@ -4,8 +4,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class InputHandler implements KeyListener, MouseListener {
+public class InputHandler implements KeyListener, MouseListener, MouseMotionListener {
 	
 	public static boolean W;
 	public static boolean A;
@@ -80,14 +81,12 @@ public class InputHandler implements KeyListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Main.MAIN.codeContainer.handleMouseDown(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Main.MAIN.codeContainer.handleMouseUp(e);
 	}
 
 	@Override
@@ -98,6 +97,17 @@ public class InputHandler implements KeyListener, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		Main.MAIN.codeContainer.handleMouseDragged(e);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

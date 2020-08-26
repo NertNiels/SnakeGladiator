@@ -82,7 +82,6 @@ public class Snake {
 	}
 	
 	public String getPacketString() {
-		System.out.println("Server: " + direction);
 		return "*"+playerId+"*"+direction+"*"+hasGrown+"*"+dead;
 	}
 	
